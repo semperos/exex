@@ -1,6 +1,14 @@
 (ns com.semperos.exex
   (:require [clojure.string :as str]))
 
+(defmacro add-example
+  [v example]
+  (list 'alter-meta! v `assoc :example example))
+
+(defmacro add-viz
+  [v example]
+  (list 'alter-meta! v `assoc :viz example))
+
 (defn test-example
   [a b]
   (+ a b))
@@ -17,14 +25,6 @@
 (add-viz #'com.semperos.exex/test-viz
          {:type :plot
           :args 7})
-
-(defmacro add-example
-  [v example]
-  (list 'alter-meta! v `assoc :example example))
-
-(defmacro add-viz
-  [v example]
-  (list 'alter-meta! v `assoc :viz example))
 
 (defn find-meta
   [k ns]
@@ -51,7 +51,7 @@
          :else ::unsupported)))
    viz-vars))
 
-(defn run-examples
-  [example-vars]
-  (doseq [example-var example-vars]
-    (eval ((comp :example meta) example-var))))
+(comment
+  (doseq [x (render-viz [#'test-viz])]
+    (println x))
+  )
